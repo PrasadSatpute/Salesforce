@@ -1,0 +1,63 @@
+<template>
+    <lightning-card title="Parent Component For Select User and Initiate Case">
+        <div class="slds-m-around_medium">
+            <!-- User Dropdown -->
+            <lightning-combobox
+                label="Select User"
+                value={selectedUserId}
+                placeholder="Select a User"
+                options={userOptions}
+                onchange={handleUserSelection}>
+            </lightning-combobox>
+
+            <!-- Initiate Case Button -->
+            <lightning-button
+                label="Initiate Case"
+                variant="brand"
+                onclick={openModal}
+                class="slds-m-top_medium">
+            </lightning-button>
+        </div>
+        <div>
+            <!-- Display Selected User ID for Testing (Optional) -->
+            <template if:true={selectedUserId}>
+                <p>Selected User ID: {selectedUserId}</p>
+            </template>
+        </div>
+
+
+            <c-child-case cases={caseList} onupdatecase={handleCaseUpdate}></c-child-case>
+            
+        
+    </lightning-card>
+    <!-- Modal for Creating New Case -->
+    <template if:true={isModalOpen}>
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- Modal/Popup Header -->
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-text-heading_medium">Create New Case</h2>
+                </header>
+
+                <!-- Modal/Popup Body -->
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-input label="Case Subject" value={caseSubject} onchange={handleInputChange} data-id="subject"></lightning-input>
+                    <lightning-input label="Case Description" value={caseDescription} onchange={handleInputChange} data-id="description"></lightning-input>
+                    <lightning-combobox label="Case Priority" value={casePriority} options={priorityOptions} onchange={handleInputChange} data-id="priority"></lightning-combobox>
+                </div>
+
+                <!-- Modal/Popup Footer -->
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Cancel" onclick={closeModal}></lightning-button>
+                    <lightning-button variant="brand" label="Save" onclick={handleSaveCase}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    
+</template>

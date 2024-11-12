@@ -41,9 +41,10 @@ export default class ContactList extends LightningElement {
         const selectedRows = event.detail.selectedRows;
         // this.selectedContacts = selectedRows.map(row => ({id: row.Id}));
 
+        console.log(selectedRows);
+
         if (selectedRows.length > 0) {
-            // Map selected rows to create a new array with just the 'Id' field
-            // this.selectedContacts = selectedRows.map(row => ({ id: row.Id }));
+            
             this.selectedContacts = selectedRows[0].Id;
             
         } else {

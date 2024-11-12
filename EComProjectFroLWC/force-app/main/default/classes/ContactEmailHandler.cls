@@ -14,9 +14,9 @@ public with sharing class ContactEmailHandler {
 
     // Send Emails to Selected Contacts
     @AuraEnabled
-    public static void sendEmail(Id contactIds, Id templateId) {
+    public static void sendEmail(List<Id> contactIds, Id templateId) {
 
-        List<Contact> contacts = [SELECT Id, Email FROM Contact WHERE Id  =:contactIds];
+        List<Contact> contacts = [SELECT Id, Email FROM Contact WHERE Id  IN :contactIds];
         EmailTemplate emailTemplate = [SELECT Id, DeveloperName FROM EmailTemplate WHERE Id = :templateId LIMIT 1];
 
         if (contacts.isEmpty()) {
