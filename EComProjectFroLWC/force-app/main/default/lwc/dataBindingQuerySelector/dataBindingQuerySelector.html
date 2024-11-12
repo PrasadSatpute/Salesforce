@@ -1,0 +1,17 @@
+<template>
+    <div class="slds-m-around_medium">
+        <h1>Hello, {greeting}</h1>
+        <lightning-input label="Name" value={greeting}></lightning-input>
+        <br>
+        <lightning-button label="Click Me" onclick={handleClick} variant="brand"></lightning-button>
+    </div>
+    <br>
+    <div class="slds-m-around_medium">
+        <h1>Hello, {firstName} {lastName}</h1>
+        <lightning-input name="fname" label="First Name" value={firstName} ></lightning-input>
+        <lightning-input name="lname" label="Last Name" value={lastName} ></lightning-input>
+        
+        <br>
+        <lightning-button label="Click Me" onclick={handleClickTest} variant="brand"></lightning-button>
+    </div>
+</template>

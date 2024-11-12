@@ -1,0 +1,15 @@
+<template>
+    <lightning-card title="Related Contacts">
+        <ul>
+            <template if:true={record.data}>
+                <lightning-formatted-text value={name}></lightning-formatted-text>
+            </template>
+            
+            <template for:each={contacts.data} for:item="contact">
+                <li key={contact.Id}>
+                    {contact.FirstName}
+                </li>
+            </template>
+        </ul>
+    </lightning-card>
+</template>
