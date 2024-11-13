@@ -2,11 +2,13 @@ import { LightningElement, api, track } from 'lwc';
 
 export default class ChildCase extends LightningElement {
     @api cases = []; // List of cases passed from parent
-    @track isEditModalOpen = false;
+    @track isEditing = false;
     @track caseToEdit = {}; // Case currently being edited
 
     @api caseId; // Public property to receive data from Parent
     @track caseFields = {}; // Track case data here
+    @track selectedCaseId; // To keep track of the currently selected case Id
+
 
     priorityOptions = [
         { label: 'High', value: 'High' },
@@ -16,25 +18,41 @@ export default class ChildCase extends LightningElement {
 
     handleViewCase(event) {
         const caseId = event.target.dataset.id;
+        this.selectedCaseId = caseId;
         this.caseToEdit = this.cases.find(caseRecord => caseRecord.Id === caseId);
-        this.isEditModalOpen = true;
+        // this.isEditModalOpen = true;
+        this.isEditing = true;
     }
 
     handleFieldChange(event) {
         const field = event.target.dataset.id;
         this.caseToEdit = { ...this.caseToEdit, [field]: event.target.value };
+        // Dispatch an event with the updated case data
+        this.dispatchEvent(new CustomEvent('updatecase', { detail: this.caseToEdit }));
     }
 
     closeEditModal() {
-        this.isEditModalOpen = false;
+        // this.isEditModalOpen = false;
     }
 
-    handleSave() {
-        // this.isEditModalOpen = false;
-        this.dispatchEvent(new CustomEvent('updatecase', { detail: this.caseToEdit }));
-        // Close the modal after saving
-        this.closeEditModal();
+    
+
+    cancelEdit() {
+        this.isEditing = false;
+        this.caseToEdit = {};
+        this.selectedCaseId = null;
     }
+
+    // New method to exit edit mode when triggered by the parent component
+    @api
+    exitEditMode() {
+        this.cancelEdit();
+    }
+
+    isCaseSelected(caseId) {
+        return this.selectedCaseId === caseId;
+    }
+
 
     handleInputChange(event) {
         // Get the field value and case Id
@@ -53,4 +71,17 @@ export default class ChildCase extends LightningElement {
             detail: updatedCase
         }));
     }
+
+    // handleSave() {
+    //     // this.isEditModalOpen = false;
+    //     this.dispatchEvent(new CustomEvent('updatecase', { detail: this.caseToEdit }));
+
+    //     // Reset edit state
+    //     this.isEditing = false;
+    //     this.caseToEdit = {};
+    //     this.selectedCaseId = null;
+
+    //     // Close the modal after saving
+    //     this.closeEditModal();
+    // }
 }

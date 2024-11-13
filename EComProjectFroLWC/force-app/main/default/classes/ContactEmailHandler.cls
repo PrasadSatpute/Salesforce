@@ -16,6 +16,9 @@ public with sharing class ContactEmailHandler {
     @AuraEnabled
     public static void sendEmail(List<Id> contactIds, Id templateId) {
 
+        System.debug('List of Contacts : '+contactIds);
+        System.debug('Email Template ID : '+templateId);
+
         List<Contact> contacts = [SELECT Id, Email FROM Contact WHERE Id  IN :contactIds];
         EmailTemplate emailTemplate = [SELECT Id, DeveloperName FROM EmailTemplate WHERE Id = :templateId LIMIT 1];
 

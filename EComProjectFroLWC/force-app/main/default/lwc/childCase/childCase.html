@@ -1,70 +1,81 @@
 <template>
-    <lightning-card title="Cases List">
-        <table class="slds-table slds-table_bordered slds-table_cell-buffer">
-            <thead>
-                <tr class="slds-line-height_reset">
-                    <th scope="col">
-                        <div class="slds-truncate" title="Case Number">Case Number</div>
-                    </th>
-                    <th scope="col">
-                        <div class="slds-truncate" title="Subject">Subject</div>
-                    </th>
-                    <th scope="col">
-                        <div class="slds-truncate" title="Priority">Priority</div>
-                    </th>
-                    <th scope="col">
-                        <div class="slds-truncate" title="Actions">Actions</div>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <template for:each={cases} for:item="caseItem">
-                    <tr key={caseItem.Id}>
-                        <td>
-                            <div class="slds-truncate" title={caseItem.CaseNumber}>{caseItem.CaseNumber}</div>
-                        </td>
-                        <td>
-                            <div class="slds-truncate" title={caseItem.Subject}>{caseItem.Subject}</div>
-                        </td>
-                        <td>
-                            <div class="slds-truncate" title={caseItem.Priority}>{caseItem.Priority}</div>
-                        </td>
-                        <td>
-                            <lightning-button
-                                label="View"
-                                variant="brand"
-                                onclick={handleViewCase}
-                                data-id={caseItem.Id}>
-                            </lightning-button>
-                        </td>
+    <lightning-card title="Child Component for Cases List" icon-name="standard:case">
+        <div class="slds-scrollable_y">
+            <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-table_fixed-layout">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th scope="col">
+                            <div class="slds-truncate" title="Case Number">Case Number</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Subject">Subject</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Priority">Priority</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Actions">Actions</div>
+                        </th>
                     </tr>
-                </template>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <template for:each={cases} for:item="caseItem">
+                        <tr key={caseItem.Id}>
+                            <td>
+                                <div class="slds-truncate" title={caseItem.Id}>{caseItem.Id}</div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate" title={caseItem.Subject}>{caseItem.Subject}</div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate" title={caseItem.Priority}>{caseItem.Priority}</div>
+                            </td>
+                            <td>
+                                <lightning-button
+                                    label="View"
+                                    variant="neutral"
+                                    onclick={handleViewCase}
+                                    data-id={caseItem.Id}
+                                    class="slds-m-left_x-small">
+                                </lightning-button>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
 
-        <!-- Modal for editing case details -->
-        <template if:true={isEditModalOpen}>
-            <section role="dialog" class="slds-modal slds-fade-in-open">
-                <div class="slds-modal__container">
-                    <header class="slds-modal__header">
-                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeEditModal}>
-                            <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon>
-                            <span class="slds-assistive-text">Close</span>
-                        </button>
-                        <h2 class="slds-text-heading_medium">Edit Case</h2>
-                    </header>
-                    <div class="slds-modal__content slds-p-around_medium">
-                        <lightning-input label="Subject" value={caseToEdit.Subject} onchange={handleFieldChange} data-id="Subject"></lightning-input>
-                        <lightning-input label="Description" value={caseToEdit.Description} onchange={handleFieldChange} data-id="Description"></lightning-input>
-                        <lightning-combobox label="Priority" value={caseToEdit.Priority} options={priorityOptions} onchange={handleFieldChange} data-id="Priority"></lightning-combobox>
+        <!-- Inline edit form for the selected case -->
+        <template if:true={isEditing}>
+            <div class="slds-box slds-theme_shade slds-m-top_medium">
+                <h2 class="slds-text-heading_medium slds-m-bottom_small">Edit Case</h2>
+                
+                <div class="slds-grid slds-wrap slds-gutters">
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input label="Subject" value={caseToEdit.Subject} onchange={handleFieldChange} data-id="Subject" class="slds-m-bottom_small"></lightning-input>
                     </div>
-                    <footer class="slds-modal__footer">
-                        <lightning-button label="Cancel" onclick={closeEditModal}></lightning-button>
-                        <lightning-button variant="brand" label="Save" onclick={handleSave}></lightning-button>
-                    </footer>
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input label="Description" value={caseToEdit.Description} onchange={handleFieldChange} data-id="Description" class="slds-m-bottom_small"></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-combobox label="Priority" value={caseToEdit.Priority} options={priorityOptions} onchange={handleFieldChange} data-id="Priority" class="slds-m-bottom_small"></lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input label="Web Email" value={caseToEdit.WebEmail} onchange={handleFieldChange} data-id="WebEmail" class="slds-m-bottom_small"></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input label="Web Name" value={caseToEdit.WebName} onchange={handleFieldChange} data-id="WebName" class="slds-m-bottom_small"></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input label="Web Phone" value={caseToEdit.WebPhone} onchange={handleFieldChange} data-id="WebPhone" class="slds-m-bottom_small"></lightning-input>
+                    </div>
                 </div>
-            </section>
-            <div class="slds-backdrop slds-backdrop_open"></div>
+                
+                <div class="slds-grid slds-justify_end slds-m-top_small">
+                    <lightning-button label="Cancel" onclick={cancelEdit} class="slds-m-right_x-small"></lightning-button>
+                    <!-- <lightning-button label="Save" variant="brand" onclick={handleSave}></lightning-button> -->
+                </div>
+            </div>
         </template>
     </lightning-card>
 </template>

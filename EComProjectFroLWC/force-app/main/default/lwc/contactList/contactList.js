@@ -44,8 +44,8 @@ export default class ContactList extends LightningElement {
         console.log(selectedRows);
 
         if (selectedRows.length > 0) {
-            
-            this.selectedContacts = selectedRows[0].Id;
+            this.selectedRows = [...selectedRows];
+            this.selectedContacts = [...selectedRows.map(row => row.Id)];
             
         } else {
             console.log('No rows selected.');
